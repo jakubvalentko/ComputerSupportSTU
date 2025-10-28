@@ -109,7 +109,7 @@ table(resource_levels)
 
 # Create data frame
 cities <- data.frame(
-  City = c("Atria", "Volaris", "Nerath", "Lunor", "Mythra", "Orion"),
+  City = c("Atria", "bardejov", "hervartov", "dunajska", "hamuliakovo", "trebisov"),
   Population_mil = c(2.3, 5.1, 1.8, 3.4, 4.9, 2.7),
   Is_Coastal = c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
   Resource_Level = factor(c("high", "medium", "low", "medium", "high", "low"))
