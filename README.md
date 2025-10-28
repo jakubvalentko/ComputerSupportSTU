@@ -1,2 +1,2 @@
 # ComputerSupportSTU
-Moj osobny majetok
+Moj osobny majetok ktoreho sa nechcem vzdat 
