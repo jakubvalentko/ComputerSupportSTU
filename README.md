@@ -1,0 +1,2 @@
+# ComputerSupportSTU
+Moj osobny majetok
