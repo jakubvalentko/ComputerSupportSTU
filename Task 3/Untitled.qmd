@@ -1,0 +1,76 @@
+---
+title: "Task 3"
+format: html
+editor: visual
+---
+
+```{r}
+### Task 3: Expanding Your Universe (Bolivia Cities)
+
+# Inštalácia balíkov (iba raz)
+# install.packages("tidyverse")
+# install.packages("readxl")
+
+library(dplyr)
+library(readxl)
+
+# 3.2 Import dát
+bolivia_cities <- read_excel("bo.xlsx")
+
+# Rýchla kontrola dát
+glimpse(bolivia_cities)
+head(bolivia_cities)
+summary(bolivia_cities)
+
+# 3.3 Interrogation – 5 otázok s dplyr
+
+# Question 1: Ktorých 5 miest má najväčšiu populáciu?
+bolivia_cities %>%
+  select(city, population) %>%
+  arrange(desc(population)) %>%
+  head(5)
+
+# Question 2: Aká je priemerná populácia podľa departmentu (admin_name)?
+bolivia_cities %>%
+  group_by(admin_name) %>%
+  summarise(avg_pop = mean(population, na.rm = TRUE))
+
+# Question 3: Koľko miest má každé hlavné mesto (capital = "admin" alebo "primary")?
+bolivia_cities %>%
+  group_by(capital) %>%
+  summarise(count = n())
+
+# Question 4: Vypočítaj rozdiel medzi celkovou populáciou a "proper" populáciou
+bolivia_cities %>%
+  mutate(pop_diff = population - population_proper) %>%
+  select(city, admin_name, pop_diff) %>%
+  arrange(desc(pop_diff))
+
+# Question 5: Nájdite všetky mestá s populáciou nad 500 000 v regióne "Santa Cruz"
+bolivia_cities %>%
+  filter(admin_name == "Santa Cruz", population > 500000) %>%
+  select(city, population, admin_name)
+```
+
+------------------------------------------------------------------------
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
