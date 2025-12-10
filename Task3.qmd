@@ -1,0 +1,86 @@
+---
+title: "Task3"
+author: "Jakub"
+format: html
+editor: visual
+---
+---
+title: "Task 3: Rozšírenie Kubovej planéty – Bolívijské mestá"
+author: "Jakub"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+## 3.1 Dataset
+# Data from: bo.xlsx (Bolivian cities dataset)
+
+## 3.2 Import
+library(dplyr)
+library(readxl)
+
+# Načítanie dát
+bolivia <- read_excel("bo.xlsx")
+
+# Prvá kontrola
+glimpse(bolivia)
+head(bolivia)
+summary(bolivia)
+
+## 3.3 Interrogation – 5 otázok s dplyr
+
+# Otázka 1: Ktorých 5 miest má najväčšiu populáciu?
+bolivia %>%
+  select(city, country, population) %>%
+  arrange(desc(population)) %>%
+  head(5)
+
+# Otázka 2: Aká je priemerná populácia podľa departmentu (admin_name)?
+bolivia %>%
+  group_by(admin_name) %>%
+  summarise(avg_pop = mean(population, na.rm = TRUE)) %>%
+  arrange(desc(avg_pop))
+
+# Otázka 3: Koľko miest má každé hlavné mesto (capital)?
+bolivia %>%
+  group_by(capital) %>%
+  summarise(count_miest = n())
+
+# Otázka 4: Vytvor nový stĺpec s rozdielom medzi celkovou populáciou a „proper“ populáciou
+bolivia %>%
+  mutate(diff_pop = population - population_proper) %>%
+  select(city, population, population_proper, diff_pop) %>%
+  arrange(desc(diff_pop)) %>%
+  head(10)
+
+# Otázka 5: Vyber všetky mestá s populáciou nad 500 000
+bolivia %>%
+  filter(population > 500000) %>%
+  select(city, admin_name, population) %>%
+  arrange(desc(population))
+```
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
