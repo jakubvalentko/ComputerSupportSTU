@@ -1,0 +1,94 @@
+---
+title: "Task5"
+author: "Jakub"
+format: html
+editor: visual
+---
+
+---
+title: "Task 5: Vizualizácie Kubovej planéty – Bolívijské mestá"
+author: "Jakub"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+if (!require(ggplot2)) install.packages("ggplot2")
+if (!require(readxl)) install.packages("readxl")
+
+library(ggplot2)
+library(readxl)
+library(dplyr)
+
+# Načítanie dát
+bolivia <- read_excel("bo.xlsx")
+
+## 5.1 Base R Histogram – distribúcia populácie
+hist(bolivia$population,
+     main = "Distribúcia populácie bolívijských miest",
+     xlab = "Populácia (obyvatelia)",
+     col = "lightblue",
+     border = "white")
+
+## 5.2 Scatter Plot – vzťah medzi zemepisnou šírkou a populáciou
+ggplot(data = bolivia, aes(x = lat, y = population)) +
+  geom_point(alpha = 0.7, size = 3, colour = "blue") +
+  geom_smooth(color = "gray") +
+  labs(title = "Vzťah medzi zemepisnou šírkou a populáciou",
+       x = "Zemepisná šírka",
+       y = "Populácia (obyvatelia)") +
+  theme_minimal()
+
+## 5.3 Boxplot – porovnanie populácie podľa departmentu (admin_name)
+ggplot(data = bolivia, aes(x = admin_name, y = population, fill = admin_name)) +
+  geom_boxplot() +
+  labs(title = "Porovnanie populácie podľa departmentu",
+       x = "Department",
+       y = "Populácia (obyvatelia)") +
+  theme_light() +
+  theme(legend.position = "none")
+
+## 5.4 Facet – histogram populácie rozdelený podľa departmentu
+ggplot(data = bolivia, aes(x = population)) +
+  geom_histogram(bins = 15, fill = "coral", color = "black") +
+  facet_wrap(~ admin_name) +
+  labs(title = "Distribúcia populácie podľa departmentov",
+       x = "Populácia (obyvatelia)",
+       y = "Počet miest")
+
+## 5.5 Export – uloženie obľúbeného grafu (scatter plot)
+scatter_plot <- ggplot(data = bolivia, aes(x = lat, y = population)) +
+  geom_point(alpha = 0.7, size = 3, colour = "blue") +
+  geom_smooth(color = "gray") +
+  labs(title = "Vzťah medzi zemepisnou šírkou a populáciou",
+       x = "Zemepisná šírka",
+       y = "Populácia (obyvatelia)") +
+  theme_minimal()
+
+ggsave("scatter_population_lat.png", plot = scatter_plot, width = 8, height = 6)
+```
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
