@@ -1,0 +1,104 @@
+---
+title: "Task4"
+author: "Jakub"
+format: html
+editor: visual
+---
+
+---
+title: "Task 4: Toolkit pre Kubovu planétu – Bolívijské mestá"
+author: "Jakub"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+library(dplyr)
+library(readxl)
+
+## 4.1 Greeting Function
+welcome_to_my_universe <- function(your_name, universe_name) {
+  cat("--------------------------------\n")
+  cat("Analysis Toolkit for:", universe_name, "\n")
+  cat("Report prepared by:", your_name, "\n")
+  cat("--------------------------------\n")
+}
+
+# Volanie
+welcome_to_my_universe("Jakub", "Kubova planéta – Bolívijské mestá")
+
+## 4.2 Loading Function
+load_and_inspect <- function(file_path) {
+  data <- read_excel(file_path)
+  cat("--- Data Loaded:", file_path, "---\n")
+  print(glimpse(data))
+  cat("\n--- First 6 Rows: ---\n")
+  print(head(data))
+  return(data)
+}
+
+# Volanie
+bolivia <- load_and_inspect("bo.xlsx")
+
+## 4.3 Query Function
+# Funkcia na filtrovanie miest podľa prahu populácie
+filter_cities_by_population <- function(data, pop_threshold) {
+  result <- data %>%
+    filter(population > pop_threshold) %>%
+    select(city, admin_name, population) %>%
+    arrange(desc(population))
+  return(result)
+}
+
+# Volanie – mestá nad 500 000 obyvateľov
+big_cities <- filter_cities_by_population(bolivia, 500000)
+print(big_cities)
+
+## 4.4 Reporting Function
+generate_report <- function(data, region_name) {
+  region_data <- data %>%
+    filter(admin_name == region_name)
+  
+  avg_pop <- mean(region_data$population, na.rm = TRUE)
+  max_pop <- max(region_data$population, na.rm = TRUE)
+  min_pop <- min(region_data$population, na.rm = TRUE)
+  record_count <- nrow(region_data)
+  
+  cat("--- Report for region:", region_name, "---\n")
+  cat("Number of Cities:", record_count, "\n")
+  cat("Average Population:", round(avg_pop, 0), "\n")
+  cat("Maximum Population:", max_pop, "\n")
+  cat("Minimum Population:", min_pop, "\n")
+  cat("----------------------------------\n\n")
+}
+
+# Volanie – správa pre Santa Cruz a Cochabamba
+generate_report(bolivia, "Santa Cruz")
+generate_report(bolivia, "Cochabamba")
+```
+
+------------------------------------------------------------------------
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
