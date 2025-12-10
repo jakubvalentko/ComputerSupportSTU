@@ -1,0 +1,151 @@
+---
+title: "Task2"
+author: "Jakub"
+format: html
+editor: visual
+---
+---
+title: "Task 1 & Task 2: Kubova planéta"
+author: "Jakub"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+## Task 1: Exploring Data Types in R
+
+# 1.1 Atomické typy
+teplota <- 23.5
+gravitacia <- 9.8
+polomer_km <- 6400.2
+hodnotenie <- 4.7
+
+mesiace <- as.integer(2)
+mesta <- as.integer(12)
+obyvatelia_miliony <- as.integer(50)
+
+ma_vodu <- TRUE
+je_obyvatelna <- TRUE
+
+nazov_planety <- "Kubova planeta"
+oblast <- "region stropkov"
+kategoria <- "majestatna"
+
+cat("Planéta", nazov_planety, "v oblasti", oblast,
+    "má", mesiace, "mesiace,",
+    obyvatelia_miliony, "miliónov obyvateľov,",
+    "teplotu", teplota, "°C a hodnotenie", hodnotenie, ".")
+
+# 1.2 Vektory
+vektor_numeric <- c(teplota, gravitacia, polomer_km, hodnotenie,
+                    mesiace, mesta, obyvatelia_miliony)
+
+vektor_sekvencia <- seq(20, 100, by = 5)
+
+set.seed(1)
+vektor_logicky <- sample(c(TRUE, FALSE), size = 10, replace = TRUE)
+
+# 1.3 Matica
+set.seed(123)
+matica_planeta <- matrix(sample(-50:50, 9), nrow = 3, ncol = 3)
+rownames(matica_planeta) <- c("Auroria", "Zephyria", "Lunara")
+colnames(matica_planeta) <- c("Energia", "Zdroje", "Populácia")
+
+# 1.4 Zoznam
+zoznam_planeta <- list(
+  atomicke = list(teplota, gravitacia, polomer_km, hodnotenie,
+                  mesiace, mesta, obyvatelia_miliony,
+                  ma_vodu, je_obyvatelna,
+                  nazov_planety, oblast, kategoria),
+  vektory = list(vektor_numeric, vektor_sekvencia, vektor_logicky),
+  matica = matica_planeta,
+  popis = "Kubova planeta je majestatna planéta v regione Stropkov s mestami a zdrojmi."
+)
+
+# 1.5 Faktor
+stadium_vyvoja <- factor(c("nízke", "stredné", "vysoké", "stredné", "vysoké", "nízke"),
+                         levels = c("nízke", "stredné", "vysoké"))
+
+# 1.6 Dátový rámec
+df_planeta <- data.frame(
+  Mesto = c("Solara", "Nivara", "Celestria", "Orionis", "Velora", "Thalora"),
+  Populacia_miliony = c(5, 8, 12, 7, 10, 8),
+  Pobrežné = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
+  Typ = c("hlavné", "priemyselné", "kultúrne", "výskumné", "obchodné", "obytné")
+)
+df_planeta$Index_hustoty <- df_planeta$Populacia_miliony / 10
+
+
+## Task 2: Subsetting & Missing Data
+
+# 2.1 Vektory
+vektor_sekvencia[3]
+vektor_sekvencia[2:5]
+vektor_sekvencia[vektor_sekvencia > 20]
+
+vektor_logicky[vektor_logicky]
+which(vektor_logicky)
+
+# 2.2 Zoznam
+zoznam_planeta$popis
+zoznam_planeta[[3]]
+zoznam_planeta$vektory[[1]][2]
+
+# 2.3 Dátový rámec
+head(df_planeta, 3)
+df_planeta[4, 1]
+df_planeta$Pobrežné
+
+df_subset <- df_planeta[df_planeta$Populacia_miliony > 8, ]
+df_subset
+
+df_subset_2 <- df_planeta[df_planeta$Typ %in% c("hlavné", "obchodné"), ]
+df_subset_2
+
+# 2.4 NA hodnoty
+df_corrupted <- df_planeta
+df_corrupted[2, 2] <- NA
+df_corrupted[5, 3] <- NA
+df_corrupted[6, 4] <- NA
+
+sum(is.na(df_corrupted))
+colSums(is.na(df_corrupted))
+
+mean(df_corrupted$Populacia_miliony)
+mean(df_corrupted$Populacia_miliony, na.rm = TRUE)
+
+df_clean <- na.omit(df_corrupted)
+df_clean
+
+# 2.5 Bonus: which()
+highest_pop_index <- which.max(df_planeta$Populacia_miliony)
+df_planeta[highest_pop_index, ]
+
+lowest_pop_index <- which.min(df_planeta$Populacia_miliony)
+df_planeta[lowest_pop_index, ]
+```
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
